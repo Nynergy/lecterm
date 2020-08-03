@@ -2,8 +2,15 @@
 
 #include <ncurses.h>
 
-#include "Point.h"
+#include "Points.h"
 
 namespace CursesUtil {
 	void drawCharAtPoint(char ch, Point p);
+	void drawHorizontalLineFromAToB(Point a, Point b);
+	void drawVerticalLineFromAToB(Point a, Point b);
+	void drawBoxAtCorners(BoxCorners corners);
+	void drawTopAndBottom(BoxCorners corners);
+	void drawLeftAndRight(BoxCorners corners);
+	void drawCorners(BoxCorners corners);
+
 }

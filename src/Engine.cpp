@@ -38,7 +38,7 @@ void Engine::teardownCursesEnvironment() {
 }
 
 void Engine::drawingTest() {
-	CursesUtil::drawCharAtPoint('X', Point(10, 10));
-	CursesUtil::drawCharAtPoint('Y', Point(27, 10));
-	CursesUtil::drawCharAtPoint('Z', Point(15, 33));
+	BoxCorners corners = BoxCorners(Point(1, 1), Point(20, 1), Point(1, 20), Point(20, 20));
+
+	CursesUtil::drawBoxAtCorners(corners);
 }
