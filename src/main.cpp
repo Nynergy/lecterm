@@ -1,5 +1,13 @@
 #include <iostream>
 
+#include "Engine.h"
+
 int main() {
-	std::cout << "Hello World!" << std::endl;
+	Engine * engine = new Engine();
+
+	engine->drawingTest();
+
+	int ch = getch();
+
+	delete engine;
 }
