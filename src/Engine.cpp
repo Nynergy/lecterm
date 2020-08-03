@@ -38,7 +38,6 @@ void Engine::teardownCursesEnvironment() {
 }
 
 void Engine::drawingTest() {
-	BoxCorners corners = BoxCorners(Point(1, 1), Point(20, 1), Point(1, 20), Point(20, 20));
-
-	CursesUtil::drawBoxAtCorners(corners);
+	Panel myPanel = Panel(Point(10, 10), 10, 20);
+	myPanel.drawToScreen();
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CursesUtil.h"
+#include "Panel.h"
 
 class Engine {
 private:
