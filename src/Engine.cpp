@@ -4,11 +4,14 @@ Engine::Engine() {
 	setupCursesEnvironment();
 
 	state = new State();
-	panelConstructor = PanelConstructor();
+	commandFactory = new CommandFactory(state);
+	panelConstructor = new PanelConstructor();
 }
 
 Engine::~Engine() {
 	delete state;
+	delete commandFactory;
+	delete panelConstructor;
 
 	teardownCursesEnvironment();
 }
@@ -47,9 +50,9 @@ void Engine::init() {
 }
 
 void Engine::constructPanels() {
-	state->addPanel(panelConstructor.getNewNotebookPanel());
-	state->addPanel(panelConstructor.getNewNoteListPanel());
-	state->addPanel(panelConstructor.getNewNotePanel());
+	state->addPanel(panelConstructor->getNewNotebookPanel());
+	state->addPanel(panelConstructor->getNewNoteListPanel());
+	state->addPanel(panelConstructor->getNewNotePanel());
 }
 
 void Engine::run() {
@@ -68,10 +71,7 @@ void Engine::renderPanels() {
 }
 
 void Engine::handleInput(int key) {
-	// TODO: Convert keys to the appropriate Command
-	if(key == 'q') {
-		Command * command = new QuitApplicationCommand(state);
-		command->execute();
-		delete command;
-	}
+	Command * command = commandFactory->getCommandFromKey(key);
+	command->execute();
+	delete command;
 }

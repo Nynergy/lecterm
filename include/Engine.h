@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Command.h"
+#include "CommandFactory.h"
 #include "PanelConstructor.h"
 
 class Engine {
 private:
 	State * state;
 
-	PanelConstructor panelConstructor;
+	CommandFactory * commandFactory;
+	PanelConstructor * panelConstructor;
 
 	void setupCursesEnvironment();
 	void initializeColorPairs();
