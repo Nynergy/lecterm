@@ -5,6 +5,10 @@ namespace CursesUtil {
 		mvaddch(p.y, p.x, ch);
 	}
 
+	void drawStringAtPoint(std::string text, Point p) {
+		mvaddstr(p.y, p.x, text.c_str());
+	}
+
 	void drawHorizontalLineFromAToB(Point a, Point b) {
 		if(Point::pointsHaveUnequalY(a, b)) { return; }
 

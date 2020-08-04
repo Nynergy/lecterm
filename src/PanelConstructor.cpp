@@ -13,7 +13,10 @@ Panel * PanelConstructor::getNewNotebookPanel() {
 	int lines = CursesUtil::maxLines();
 	int columns = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
 
-	return new Panel(upperLeftCorner, lines, columns);
+	Panel * notebooks = new Panel(upperLeftCorner, lines, columns);
+	notebooks->setTitle("Notebooks");
+
+	return notebooks;
 }
 
 Panel * PanelConstructor::getNewNoteListPanel() {
@@ -22,7 +25,10 @@ Panel * PanelConstructor::getNewNoteListPanel() {
 	int lines = CursesUtil::maxLines();
 	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
 
-	return new Panel(upperLeftCorner, lines, columns);
+	Panel * noteList = new Panel(upperLeftCorner, lines, columns);
+	noteList->setTitle("Note List");
+
+	return noteList;
 }
 
 Panel * PanelConstructor::getNewNotePanel() {
@@ -33,7 +39,10 @@ Panel * PanelConstructor::getNewNotePanel() {
 	int lines = CursesUtil::maxLines();
 	int columns = calculateColumnsByRatio(NOTE_PANEL_RATIO);
 
-	return new Panel(upperLeftCorner, lines, columns);
+	Panel * note = new Panel(upperLeftCorner, lines, columns);
+	note->setTitle("Note");
+
+	return note;
 }
 
 int PanelConstructor::calculateColumnsByRatio(float ratio) {

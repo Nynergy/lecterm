@@ -1,7 +1,8 @@
 #include "Panel.h"
 
 Panel::Panel(Point upperLeftCorner, int lines, int columns) :
-	upperLeftCorner(upperLeftCorner), lines(lines), columns(columns) {
+	title(""), upperLeftCorner(upperLeftCorner),
+	lines(lines), columns(columns) {
 	
 	setupWindow();
 }
@@ -20,6 +21,7 @@ void Panel::teardownWindow() {
 
 void Panel::drawToScreen() {
 	drawBorder();
+	drawTitle();
 	refreshWindow();
 }
 
@@ -37,6 +39,24 @@ BoxCorners Panel::getPanelCorners() {
 	return BoxCorners(upperLeft, upperRight, lowerLeft, lowerRight);
 }
 
+void Panel::drawTitle() {
+	Point titlePoint = calculateTitlePoint();
+	CursesUtil::drawStringAtPoint(title, titlePoint);
+}
+
+Point Panel::calculateTitlePoint() {
+	int panelHalfWidth = columns / 2;
+	int titleHalfWidth = title.length() / 2;
+	int offset = panelHalfWidth - titleHalfWidth;
+	int x = upperLeftCorner.x + offset;
+
+	return Point(x, upperLeftCorner.y);
+}
+
 void Panel::refreshWindow() {
 	wrefresh(window);
+}
+
+void Panel::setTitle(std::string newTitle) {
+	title = newTitle;
 }

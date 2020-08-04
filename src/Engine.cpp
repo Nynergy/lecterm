@@ -42,13 +42,14 @@ void Engine::teardownCursesEnvironment() {
 void Engine::drawingTest() {
 	Panel * notebooks = panelConstructor.getNewNotebookPanel();
 	notebooks->drawToScreen();
-	delete notebooks;
 
 	Panel * notelist = panelConstructor.getNewNoteListPanel();
 	notelist->drawToScreen();
-	delete notelist;
 
 	Panel * note = panelConstructor.getNewNotePanel();
 	note->drawToScreen();
+
+	delete notebooks;
+	delete notelist;
 	delete note;
 }
