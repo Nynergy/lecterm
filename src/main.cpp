@@ -4,10 +4,8 @@
 
 int main() {
 	Engine * engine = new Engine();
-
-	engine->drawingTest();
-
-	int ch = getch();
+	engine->init();
+	engine->run();
 
 	delete engine;
 }

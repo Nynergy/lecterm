@@ -39,17 +39,31 @@ void Engine::teardownCursesEnvironment() {
 	endwin();	// Destroy stdscr
 }
 
-void Engine::drawingTest() {
-	Panel * notebooks = panelConstructor.getNewNotebookPanel();
-	notebooks->drawToScreen();
+void Engine::init() {
+	constructPanels();
+}
 
-	Panel * notelist = panelConstructor.getNewNoteListPanel();
-	notelist->drawToScreen();
+void Engine::constructPanels() {
+	panels.push_back(panelConstructor.getNewNotebookPanel());
+	panels.push_back(panelConstructor.getNewNoteListPanel());
+	panels.push_back(panelConstructor.getNewNotePanel());
+}
 
-	Panel * note = panelConstructor.getNewNotePanel();
-	note->drawToScreen();
+void Engine::run() {
+	int key;
+	do {
+		renderPanels();
+		key = getch();
+		handleInput(key);
+	} while(key != 'q'); // 'q' for 'quit'
+}
 
-	delete notebooks;
-	delete notelist;
-	delete note;
+void Engine::renderPanels() {
+	for(auto panel : panels) {
+		panel->drawToScreen();
+	}
+}
+
+void Engine::handleInput(int key) {
+	// TODO: Convert keys to the appropriate Command, and dispatch to a PanelController
 }
