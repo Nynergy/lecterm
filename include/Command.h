@@ -23,3 +23,21 @@ public:
 	QuitApplicationCommand(State * state);
 	void execute() override;
 };
+
+class FocusPanelRightCommand : public Command {
+private:
+	void incrementCurrentPanel();
+
+public:
+	FocusPanelRightCommand(State * state);
+	void execute() override;
+};
+
+class FocusPanelLeftCommand : public Command {
+private:
+	void decrementCurrentPanel();
+
+public:
+	FocusPanelLeftCommand(State * state);
+	void execute() override;
+};

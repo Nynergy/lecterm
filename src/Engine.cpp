@@ -24,7 +24,7 @@ void Engine::setupCursesEnvironment() {
 	noecho();		// Disable echoing keys to console
 	start_color();		// Enable color mode
 	curs_set(0);		// Set cursor to be invisible
-	timeout(100);		// Make getch a non-blocking call
+	timeout(50);		// Make getch a non-blocking call
 
 	initializeColorPairs();
 }
@@ -55,7 +55,7 @@ void Engine::constructPanels() {
 	state->addPanel(panelConstructor->getNewNoteListPanel());
 	state->addPanel(panelConstructor->getNewNotePanel());
 
-	state->setCurrentPanel(state->getPanels().begin());
+	state->setCurrentPanel(0);
 }
 
 void Engine::run() {

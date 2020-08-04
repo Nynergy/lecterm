@@ -8,6 +8,12 @@ Command * CommandFactory::getCommandFromKey(int key) {
 		case 'q':
 			command = new QuitApplicationCommand(state);
 			break;
+		case 'h':
+			command = new FocusPanelLeftCommand(state);
+			break;
+		case 'l':
+			command = new FocusPanelRightCommand(state);
+			break;
 		default:
 			command = new NOPCommand(state);
 			break;

@@ -7,15 +7,19 @@
 class State {
 private:
 	std::vector<Panel *> panels;
-	std::vector<Panel *>::iterator currentPanel;
+	int currentPanel;
 	bool exitFlag;
+
+	int wrapIndex(int index);
 
 public:
 	State();
 	~State();
 	void addPanel(Panel * panel);
 	std::vector<Panel *> getPanels();
-	void setCurrentPanel(std::vector<Panel *>::iterator panel);
+	void setCurrentPanel(int panelIndex);
+	Panel * getCurrentPanel();
+	int getCurrentPanelIndex();
 	bool panelIsFocused(Panel * panel);
 	void setExitFlag(bool flag);
 	bool userHasQuit();

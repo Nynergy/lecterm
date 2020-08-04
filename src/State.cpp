@@ -16,12 +16,33 @@ std::vector<Panel *> State::getPanels() {
 	return panels;
 }
 
-void State::setCurrentPanel(std::vector<Panel *>::iterator current) {
-	currentPanel = current;
+void State::setCurrentPanel(int panelIndex) {
+	panelIndex = wrapIndex(panelIndex);
+	currentPanel = panelIndex;
+}
+
+int State::wrapIndex(int index) {
+	if(index > (int)panels.size() - 1) {
+		return 0;
+	}
+
+	if(index < 0) {
+		return panels.size() - 1;
+	}
+
+	return index;
+}
+
+Panel * State::getCurrentPanel() {
+	return panels[currentPanel];
+}
+
+int State::getCurrentPanelIndex() {
+	return currentPanel;
 }
 
 bool State::panelIsFocused(Panel * panel) {
-	return panel == *currentPanel;
+	return panel == panels[currentPanel];
 }
 
 void State::setExitFlag(bool flag) {
