@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vector>
-
 #include "PanelConstructor.h"
+#include "State.h"
 
 class Engine {
 private:
+	State * state;
+
 	PanelConstructor panelConstructor;
-	std::vector<Panel *> panels;
 
 	void setupCursesEnvironment();
 	void initializeColorPairs();

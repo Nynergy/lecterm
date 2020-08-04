@@ -3,10 +3,13 @@
 Engine::Engine() {
 	setupCursesEnvironment();
 
+	state = new State();
 	panelConstructor = PanelConstructor();
 }
 
 Engine::~Engine() {
+	delete state;
+
 	teardownCursesEnvironment();
 }
 
@@ -44,9 +47,9 @@ void Engine::init() {
 }
 
 void Engine::constructPanels() {
-	panels.push_back(panelConstructor.getNewNotebookPanel());
-	panels.push_back(panelConstructor.getNewNoteListPanel());
-	panels.push_back(panelConstructor.getNewNotePanel());
+	state->addPanel(panelConstructor.getNewNotebookPanel());
+	state->addPanel(panelConstructor.getNewNoteListPanel());
+	state->addPanel(panelConstructor.getNewNotePanel());
 }
 
 void Engine::run() {
@@ -59,7 +62,7 @@ void Engine::run() {
 }
 
 void Engine::renderPanels() {
-	for(auto panel : panels) {
+	for(auto panel : state->getPanels()) {
 		panel->drawToScreen();
 	}
 }
