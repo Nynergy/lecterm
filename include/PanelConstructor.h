@@ -7,6 +7,7 @@
 class PanelConstructor {
 private:
 	int calculateColumnsByRatio(float ratio);
+	int calculateColumnsByOffset(int offset);
 
 public:
 	PanelConstructor();

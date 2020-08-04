@@ -21,7 +21,7 @@ Panel * PanelConstructor::getNewNotebookPanel() {
 
 Panel * PanelConstructor::getNewNoteListPanel() {
 	int offset = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
-	Point upperLeftCorner = Point(offset + 1, 0);
+	Point upperLeftCorner = Point(offset, 0);
 	int lines = CursesUtil::maxLines();
 	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
 
@@ -35,9 +35,9 @@ Panel * PanelConstructor::getNewNotePanel() {
 	int offsetOne = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
 	int offsetTwo = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
 	int offset = offsetOne + offsetTwo;
-	Point upperLeftCorner = Point(offset + 1, 0);
+	Point upperLeftCorner = Point(offset, 0);
 	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByRatio(NOTE_PANEL_RATIO);
+	int columns = calculateColumnsByOffset(offset);
 
 	Panel * note = new Panel(upperLeftCorner, lines, columns);
 	note->setTitle("Note");
@@ -47,6 +47,12 @@ Panel * PanelConstructor::getNewNotePanel() {
 
 int PanelConstructor::calculateColumnsByRatio(float ratio) {
 	int columns = floor(ratio * CursesUtil::maxColumns());
+
+	return columns;
+}
+
+int PanelConstructor::calculateColumnsByOffset(int offset) {
+	int columns = CursesUtil::maxColumns() - offset;
 
 	return columns;
 }
