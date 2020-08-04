@@ -11,6 +11,7 @@ private:
 
 	void setupWindow();
 	void teardownWindow();
+	void drawFocusedBorder();
 	void drawBorder();
 	void drawTitle();
 	Point calculateTitlePoint();
@@ -21,5 +22,6 @@ public:
 	Panel(Point upperLeftCorner, int lines, int columns);
 	~Panel();
 	void drawToScreen();
+	void drawFocusedToScreen();
 	void setTitle(std::string newTitle);
 };

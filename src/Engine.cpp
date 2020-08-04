@@ -24,6 +24,7 @@ void Engine::setupCursesEnvironment() {
 	noecho();		// Disable echoing keys to console
 	start_color();		// Enable color mode
 	curs_set(0);		// Set cursor to be invisible
+	timeout(100);		// Make getch a non-blocking call
 
 	initializeColorPairs();
 }
@@ -53,21 +54,29 @@ void Engine::constructPanels() {
 	state->addPanel(panelConstructor->getNewNotebookPanel());
 	state->addPanel(panelConstructor->getNewNoteListPanel());
 	state->addPanel(panelConstructor->getNewNotePanel());
+
+	state->setCurrentPanel(state->getPanels().begin());
 }
 
 void Engine::run() {
 	int key;
 	while(state->userHasNotQuit()) {
-		renderPanels();
 		key = getch();
+		renderPanels();
 		handleInput(key);
 	}
 }
 
 void Engine::renderPanels() {
 	for(auto panel : state->getPanels()) {
-		panel->drawToScreen();
+		if(state->panelIsFocused(panel)) {
+			panel->drawFocusedToScreen();
+		} else {
+			panel->drawToScreen();
+		}
 	}
+
+	refresh();
 }
 
 void Engine::handleInput(int key) {

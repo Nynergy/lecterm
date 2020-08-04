@@ -16,6 +16,14 @@ std::vector<Panel *> State::getPanels() {
 	return panels;
 }
 
+void State::setCurrentPanel(std::vector<Panel *>::iterator current) {
+	currentPanel = current;
+}
+
+bool State::panelIsFocused(Panel * panel) {
+	return panel == *currentPanel;
+}
+
 void State::setExitFlag(bool flag) {
 	exitFlag = flag;
 }

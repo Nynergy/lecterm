@@ -25,32 +25,44 @@ void Panel::drawToScreen() {
 	refreshWindow();
 }
 
+void Panel::drawFocusedToScreen() {
+	drawFocusedBorder();
+	drawTitle();
+	refreshWindow();
+}
+
+void Panel::drawFocusedBorder() {
+	// FIXME Naked Macros bad bad bad
+	wattron(window, COLOR_PAIR(1));
+	drawBorder();
+	wattroff(window, COLOR_PAIR(1));
+}
+
 void Panel::drawBorder() {
 	BoxCorners corners = getPanelCorners();
-	CursesUtil::drawBoxAtCorners(corners);
+	CursesUtil::drawBoxAtCorners(window, corners);
 }
 
 BoxCorners Panel::getPanelCorners() {
-	Point upperLeft = upperLeftCorner;
-	Point upperRight = Point(upperLeftCorner.x + (columns - 1), upperLeftCorner.y);
-	Point lowerLeft = Point(upperLeftCorner.x, upperLeftCorner.y + (lines - 1));
-	Point lowerRight = Point(upperLeftCorner.x + (columns - 1), upperLeftCorner.y + (lines - 1));
+	Point upperLeft = Point(0, 0);
+	Point upperRight = Point(upperLeft.x + (columns - 1), upperLeft.y);
+	Point lowerLeft = Point(upperLeft.x, upperLeft.y + (lines - 1));
+	Point lowerRight = Point(upperRight.x, lowerLeft.y);
 
 	return BoxCorners(upperLeft, upperRight, lowerLeft, lowerRight);
 }
 
 void Panel::drawTitle() {
 	Point titlePoint = calculateTitlePoint();
-	CursesUtil::drawStringAtPoint(title, titlePoint);
+	CursesUtil::drawStringAtPoint(window, title, titlePoint);
 }
 
 Point Panel::calculateTitlePoint() {
 	int panelHalfWidth = columns / 2;
 	int titleHalfWidth = title.length() / 2;
-	int offset = panelHalfWidth - titleHalfWidth;
-	int x = upperLeftCorner.x + offset;
+	int x = panelHalfWidth - titleHalfWidth;
 
-	return Point(x, upperLeftCorner.y);
+	return Point(x, 0);
 }
 
 void Panel::refreshWindow() {

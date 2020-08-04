@@ -5,15 +5,19 @@
 
 #include "Points.h"
 
+// Each draw method takes the window to be drawn to, which allows these
+// methods to draw to any screen, be it for a panel or just stdscr.
+
 namespace CursesUtil {
-	void drawCharAtPoint(char ch, Point p);
-	void drawStringAtPoint(std::string text, Point p);
-	void drawHorizontalLineFromAToB(Point a, Point b);
-	void drawVerticalLineFromAToB(Point a, Point b);
-	void drawBoxAtCorners(BoxCorners corners);
-	void drawTopAndBottom(BoxCorners corners);
-	void drawLeftAndRight(BoxCorners corners);
-	void drawCorners(BoxCorners corners);
+	void drawCharAtPoint(WINDOW * win, char ch, Point p);
+	void drawStringAtPoint(WINDOW * win, std::string text, Point p);
+	void drawHorizontalLineFromAToB(WINDOW * win, Point a, Point b);
+	void drawVerticalLineFromAToB(WINDOW * win, Point a, Point b);
+	void drawBoxAtCornersWithAttribute(WINDOW * win, BoxCorners corners, int attr);
+	void drawBoxAtCorners(WINDOW * win, BoxCorners corners);
+	void drawTopAndBottom(WINDOW * win, BoxCorners corners);
+	void drawLeftAndRight(WINDOW * win, BoxCorners corners);
+	void drawCorners(WINDOW * win, BoxCorners corners);
 
 	int maxLines();
 	int maxColumns();
