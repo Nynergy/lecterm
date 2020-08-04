@@ -54,11 +54,11 @@ void Engine::constructPanels() {
 
 void Engine::run() {
 	int key;
-	do {
+	while(state->userHasNotQuit()) {
 		renderPanels();
 		key = getch();
 		handleInput(key);
-	} while(key != 'q'); // 'q' for 'quit'
+	}
 }
 
 void Engine::renderPanels() {
@@ -68,5 +68,10 @@ void Engine::renderPanels() {
 }
 
 void Engine::handleInput(int key) {
-	// TODO: Convert keys to the appropriate Command, and dispatch to a PanelController
+	// TODO: Convert keys to the appropriate Command
+	if(key == 'q') {
+		Command * command = new QuitApplicationCommand(state);
+		command->execute();
+		delete command;
+	}
 }

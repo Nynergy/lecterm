@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Command.h"
 #include "PanelConstructor.h"
-#include "State.h"
 
 class Engine {
 private:

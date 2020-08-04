@@ -1,0 +1,19 @@
+#pragma once
+
+#include "State.h"
+
+class Command {
+protected:
+	State * state;
+
+	Command(State * state);
+public:
+	virtual ~Command() {}
+	virtual void execute() = 0;
+};
+
+class QuitApplicationCommand : public Command {
+public:
+	QuitApplicationCommand(State * state);
+	void execute() override;
+};
