@@ -13,4 +13,6 @@ namespace CursesUtil {
 	void drawLeftAndRight(BoxCorners corners);
 	void drawCorners(BoxCorners corners);
 
+	int maxLines();
+	int maxColumns();
 }

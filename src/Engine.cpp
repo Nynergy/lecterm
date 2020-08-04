@@ -2,6 +2,8 @@
 
 Engine::Engine() {
 	setupCursesEnvironment();
+
+	panelConstructor = PanelConstructor();
 }
 
 Engine::~Engine() {
@@ -38,6 +40,15 @@ void Engine::teardownCursesEnvironment() {
 }
 
 void Engine::drawingTest() {
-	Panel myPanel = Panel(Point(10, 10), 10, 20);
-	myPanel.drawToScreen();
+	Panel * notebooks = panelConstructor.getNewNotebookPanel();
+	notebooks->drawToScreen();
+	delete notebooks;
+
+	Panel * notelist = panelConstructor.getNewNoteListPanel();
+	notelist->drawToScreen();
+	delete notelist;
+
+	Panel * note = panelConstructor.getNewNotePanel();
+	note->drawToScreen();
+	delete note;
 }

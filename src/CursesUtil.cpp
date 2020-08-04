@@ -65,4 +65,12 @@ namespace CursesUtil {
 		drawCharAtPoint(ACS_LRCORNER, corners.lowerRight);
 		attroff(A_ALTCHARSET);
 	}
+
+	int maxLines() {
+		return LINES;
+	}
+
+	int maxColumns() {
+		return COLS;
+	}
 }
