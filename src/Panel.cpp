@@ -32,10 +32,9 @@ void Panel::drawFocusedToScreen() {
 }
 
 void Panel::drawFocusedBorder() {
-	// FIXME Naked Macros bad bad bad
-	wattron(window, COLOR_PAIR(1));
+	CursesUtil::setWindowAttributes(window, CursesUtil::getColor("red"));
 	drawBorder();
-	wattroff(window, COLOR_PAIR(1));
+	CursesUtil::unsetWindowAttributes(window, CursesUtil::getColor("red"));
 }
 
 void Panel::drawBorder() {

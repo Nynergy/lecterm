@@ -14,7 +14,7 @@ namespace CursesUtil {
 	void drawHorizontalLineFromAToB(WINDOW * win, Point a, Point b) {
 		if(Point::pointsHaveUnequalY(a, b)) { return; }
 
-		wattron(win, A_ALTCHARSET);
+		setWindowAttributes(win, A_ALTCHARSET);
 		if(a.x < b.x) {
 			for(int i = a.x; i < b.x + 1; i++) {
 				drawCharAtPoint(win, ACS_HLINE, Point(i, a.y));
@@ -26,13 +26,13 @@ namespace CursesUtil {
 				drawCharAtPoint(win, ACS_HLINE, Point(i, b.y));
 			}
 		}
-		wattroff(win, A_ALTCHARSET);
+		unsetWindowAttributes(win, A_ALTCHARSET);
 	}
 
 	void drawVerticalLineFromAToB(WINDOW * win, Point a, Point b) {
 		if(Point::pointsHaveUnequalX(a, b)) { return; }
 
-		wattron(win, A_ALTCHARSET);
+		setWindowAttributes(win, A_ALTCHARSET);
 		if(a.y < b.y) {
 			for(int i = a.y; i < b.y + 1; i++) {
 				drawCharAtPoint(win, ACS_VLINE, Point(a.x, i));
@@ -44,13 +44,13 @@ namespace CursesUtil {
 				drawCharAtPoint(win, ACS_VLINE, Point(b.x, i));
 			}
 		}
-		wattroff(win, A_ALTCHARSET);
+		unsetWindowAttributes(win, A_ALTCHARSET);
 	}
 
 	void drawBoxAtCornersWithAttribute(WINDOW * win, BoxCorners corners, int attr) {
-		wattron(win, attr);
+		setWindowAttributes(win, attr);
 		drawBoxAtCorners(win, corners);
-		wattroff(win, attr);
+		unsetWindowAttributes(win, attr);
 	}
 
 	void drawBoxAtCorners(WINDOW * win, BoxCorners corners) {
@@ -70,12 +70,20 @@ namespace CursesUtil {
 	}
 
 	void drawCorners(WINDOW * win, BoxCorners corners) {
-		wattron(win, A_ALTCHARSET);
+		setWindowAttributes(win, A_ALTCHARSET);
 		drawCharAtPoint(win, ACS_ULCORNER, corners.upperLeft);
 		drawCharAtPoint(win, ACS_URCORNER, corners.upperRight);
 		drawCharAtPoint(win, ACS_LLCORNER, corners.lowerLeft);
 		drawCharAtPoint(win, ACS_LRCORNER, corners.lowerRight);
-		wattroff(win, A_ALTCHARSET);
+		unsetWindowAttributes(win, A_ALTCHARSET);
+	}
+
+	void setWindowAttributes(WINDOW * win, int attr) {
+		wattron(win, attr);
+	}
+
+	void unsetWindowAttributes(WINDOW * win, int attr) {
+		wattroff(win, attr);
 	}
 
 	int maxLines() {
@@ -84,5 +92,16 @@ namespace CursesUtil {
 
 	int maxColumns() {
 		return COLS;
+	}
+
+	int getColor(std::string color) {
+		if(color == "black") { return COLOR_PAIR(0); }
+		else if(color == "red") { return COLOR_PAIR(1); }
+		else if(color == "green") { return COLOR_PAIR(2); }
+		else if(color == "yellow") { return COLOR_PAIR(3); }
+		else if(color == "blue") { return COLOR_PAIR(4); }
+		else if(color == "magenta") { return COLOR_PAIR(5); }
+		else if(color == "cyan") { return COLOR_PAIR(6); }
+		else { return COLOR_PAIR(7); }
 	}
 }

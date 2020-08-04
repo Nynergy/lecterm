@@ -19,6 +19,11 @@ namespace CursesUtil {
 	void drawLeftAndRight(WINDOW * win, BoxCorners corners);
 	void drawCorners(WINDOW * win, BoxCorners corners);
 
+	void setWindowAttributes(WINDOW * win, int attr);
+	void unsetWindowAttributes(WINDOW * win, int attr);
+
 	int maxLines();
 	int maxColumns();
+
+	int getColor(std::string color);
 }
