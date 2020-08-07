@@ -3,6 +3,7 @@
 struct Point {
 	int x, y;
 
+	Point() : x(0), y(0) {}
 	Point(int x, int y) : x(x), y(y) {}
 
 	static bool pointsHaveEqualX(Point a, Point b) {
@@ -27,4 +28,12 @@ struct BoxCorners {
 
 	BoxCorners(Point ul, Point ur, Point ll, Point lr) :
 		upperLeft(ul), upperRight(ur), lowerLeft(ll), lowerRight(lr) {}
+};
+
+struct PanelDimensions {
+	Point upperLeft;
+	int lines, columns;
+
+	PanelDimensions(Point ul, int l, int c) :
+		upperLeft(ul), lines(l), columns(c) {}
 };

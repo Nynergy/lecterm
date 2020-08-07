@@ -9,29 +9,50 @@ PanelConstructor::PanelConstructor() {}
 PanelConstructor::~PanelConstructor() {}
 
 Panel * PanelConstructor::getNewNotebookPanel() {
-	Point upperLeftCorner = Point(0, 0);
-	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
+	PanelDimensions panelDimensions = getNotebookPanelDimensions();
 
-	Panel * notebooks = new Panel(upperLeftCorner, lines, columns);
+	Panel * notebooks = new Panel(panelDimensions);
 	notebooks->setTitle("Notebooks");
 
 	return notebooks;
 }
 
-Panel * PanelConstructor::getNewNoteListPanel() {
-	int offset = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
-	Point upperLeftCorner = Point(offset, 0);
+PanelDimensions PanelConstructor::getNotebookPanelDimensions() {
+	Point upperLeftCorner = Point(0, 0);
 	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
+	int columns = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
 
-	Panel * noteList = new Panel(upperLeftCorner, lines, columns);
+	return PanelDimensions(upperLeftCorner, lines, columns);
+}
+
+Panel * PanelConstructor::getNewNoteListPanel() {
+	PanelDimensions panelDimensions = getNoteListPanelDimensions();
+
+	Panel * noteList = new Panel(panelDimensions);
 	noteList->setTitle("Note List");
 
 	return noteList;
 }
 
+PanelDimensions PanelConstructor::getNoteListPanelDimensions() {
+	int offset = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
+	Point upperLeftCorner = Point(offset, 0);
+	int lines = CursesUtil::maxLines();
+	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
+
+	return PanelDimensions(upperLeftCorner, lines, columns);
+}
+
 Panel * PanelConstructor::getNewNotePanel() {
+	PanelDimensions panelDimensions = getNotePanelDimensions();
+
+	Panel * note = new Panel(panelDimensions);
+	note->setTitle("Note");
+
+	return note;
+}
+
+PanelDimensions PanelConstructor::getNotePanelDimensions() {
 	int offsetOne = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
 	int offsetTwo = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
 	int offset = offsetOne + offsetTwo;
@@ -39,10 +60,7 @@ Panel * PanelConstructor::getNewNotePanel() {
 	int lines = CursesUtil::maxLines();
 	int columns = calculateColumnsByOffset(offset);
 
-	Panel * note = new Panel(upperLeftCorner, lines, columns);
-	note->setTitle("Note");
-
-	return note;
+	return PanelDimensions(upperLeftCorner, lines, columns);
 }
 
 int PanelConstructor::calculateColumnsByRatio(float ratio) {
@@ -73,35 +91,22 @@ void PanelConstructor::resizePanels(std::vector<Panel *> panels) {
 }
 
 void PanelConstructor::resizeNotebookPanel(Panel * panel) {
-	Point upperLeftCorner = Point(0, 0);
-	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
-
-	panel->setUpperLeftCorner(upperLeftCorner);
-	panel->setLines(lines);
-	panel->setColumns(columns);
+	PanelDimensions panelDimensions = getNotebookPanelDimensions();
+	setPanelDimensions(panel, panelDimensions);
 }
 
 void PanelConstructor::resizeNoteListPanel(Panel * panel) {
-	int offset = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
-	Point upperLeftCorner = Point(offset, 0);
-	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
-
-	panel->setUpperLeftCorner(upperLeftCorner);
-	panel->setLines(lines);
-	panel->setColumns(columns);
+	PanelDimensions panelDimensions = getNoteListPanelDimensions();
+	setPanelDimensions(panel, panelDimensions);
 }
 
 void PanelConstructor::resizeNotePanel(Panel * panel) {
-	int offsetOne = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
-	int offsetTwo = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
-	int offset = offsetOne + offsetTwo;
-	Point upperLeftCorner = Point(offset, 0);
-	int lines = CursesUtil::maxLines();
-	int columns = calculateColumnsByOffset(offset);
+	PanelDimensions panelDimensions = getNotePanelDimensions();
+	setPanelDimensions(panel, panelDimensions);
+}
 
-	panel->setUpperLeftCorner(upperLeftCorner);
-	panel->setLines(lines);
-	panel->setColumns(columns);
+void PanelConstructor::setPanelDimensions(Panel * panel, PanelDimensions panelDimensions) {
+	panel->setUpperLeftCorner(panelDimensions.upperLeft);
+	panel->setLines(panelDimensions.lines);
+	panel->setColumns(panelDimensions.columns);
 }

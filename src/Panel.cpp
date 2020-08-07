@@ -1,9 +1,11 @@
 #include "Panel.h"
 
-Panel::Panel(Point upperLeftCorner, int lines, int columns) :
-	title(""), upperLeftCorner(upperLeftCorner),
-	lines(lines), columns(columns) {
-	
+Panel::Panel(PanelDimensions panelDimensions) {
+	title = "";
+	upperLeftCorner = panelDimensions.upperLeft;
+	lines = panelDimensions.lines;
+	columns = panelDimensions.columns;
+
 	setupWindow();
 }
 

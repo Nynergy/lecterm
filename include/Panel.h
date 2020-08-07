@@ -19,7 +19,7 @@ private:
 	BoxCorners getPanelCorners();
 
 public:
-	Panel(Point upperLeftCorner, int lines, int columns);
+	Panel(PanelDimensions panelDimensions);
 	~Panel();
 	void drawToScreen();
 	void drawFocusedToScreen();
