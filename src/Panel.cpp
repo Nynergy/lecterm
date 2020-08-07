@@ -9,10 +9,6 @@ Panel::Panel(PanelDimensions panelDimensions) {
 	setupWindow();
 }
 
-Panel::~Panel() {
-	teardownWindow();
-}
-
 void Panel::setupWindow() {
 	window = newwin(lines, columns, upperLeftCorner.y, upperLeftCorner.x);
 }
@@ -89,4 +85,28 @@ void Panel::setColumns(int newColumns) {
 void Panel::replaceWindow() {
 	delwin(window);
 	window = newwin(lines, columns, upperLeftCorner.y, upperLeftCorner.x);
+}
+
+ListPanel::ListPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
+
+ListPanel::~ListPanel() {
+	teardownWindow();
+}
+
+void ListPanel::drawToScreen() {
+	drawBorder();
+	drawTitle();
+	refreshWindow();
+}
+
+ContentPanel::ContentPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
+
+ContentPanel::~ContentPanel() {
+	teardownWindow();
+}
+
+void ContentPanel::drawToScreen() {
+	drawBorder();
+	drawTitle();
+	refreshWindow();
 }

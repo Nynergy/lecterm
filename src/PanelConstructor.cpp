@@ -11,7 +11,7 @@ PanelConstructor::~PanelConstructor() {}
 Panel * PanelConstructor::getNewNotebookPanel() {
 	PanelDimensions panelDimensions = getNotebookPanelDimensions();
 
-	Panel * notebooks = new Panel(panelDimensions);
+	Panel * notebooks = new ListPanel(panelDimensions);
 	notebooks->setTitle("Notebooks");
 
 	return notebooks;
@@ -28,7 +28,7 @@ PanelDimensions PanelConstructor::getNotebookPanelDimensions() {
 Panel * PanelConstructor::getNewNoteListPanel() {
 	PanelDimensions panelDimensions = getNoteListPanelDimensions();
 
-	Panel * noteList = new Panel(panelDimensions);
+	Panel * noteList = new ListPanel(panelDimensions);
 	noteList->setTitle("Note List");
 
 	return noteList;
@@ -46,7 +46,7 @@ PanelDimensions PanelConstructor::getNoteListPanelDimensions() {
 Panel * PanelConstructor::getNewNotePanel() {
 	PanelDimensions panelDimensions = getNotePanelDimensions();
 
-	Panel * note = new Panel(panelDimensions);
+	Panel * note = new ContentPanel(panelDimensions);
 	note->setTitle("Note");
 
 	return note;
