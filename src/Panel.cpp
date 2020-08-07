@@ -30,9 +30,12 @@ void Panel::drawFocusedToScreen() {
 }
 
 void Panel::drawFocusedBorder() {
-	CursesUtil::setWindowAttributes(window, CursesUtil::getColor("red"));
+	Config & config = Config::getInstance();
+	std::string borderColorString = config.getValueFromKey("FocusColor");
+	int borderColor = CursesUtil::getColor(borderColorString);
+	CursesUtil::setWindowAttributes(window, borderColor);
 	drawBorder();
-	CursesUtil::unsetWindowAttributes(window, CursesUtil::getColor("red"));
+	CursesUtil::unsetWindowAttributes(window, borderColor);
 }
 
 void Panel::drawBorder() {

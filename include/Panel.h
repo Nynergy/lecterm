@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.h"
 #include "CursesUtil.h"
 
 class Panel {

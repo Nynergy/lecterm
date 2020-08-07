@@ -1,0 +1,4 @@
+MainColor = white
+FocusColor = red
+SelectionColor = green
+Transparency = true
