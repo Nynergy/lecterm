@@ -71,3 +71,20 @@ void Panel::refreshWindow() {
 void Panel::setTitle(std::string newTitle) {
 	title = newTitle;
 }
+
+void Panel::setUpperLeftCorner(Point upperLeft) {
+	upperLeftCorner = upperLeft;
+}
+
+void Panel::setLines(int newLines) {
+	lines = newLines;
+}
+
+void Panel::setColumns(int newColumns) {
+	columns = newColumns;
+}
+
+void Panel::replaceWindow() {
+	delwin(window);
+	window = newwin(lines, columns, upperLeftCorner.y, upperLeftCorner.x);
+}

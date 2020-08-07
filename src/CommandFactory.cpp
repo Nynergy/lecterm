@@ -8,6 +8,9 @@ Command * CommandFactory::getCommandFromKey(int key) {
 		case 'q':
 			command = new QuitApplicationCommand(state);
 			break;
+		case KEY_RESIZE:
+			command = new ResizeWindowCommand(state);
+			break;
 		case 'h':
 			command = new FocusPanelLeftCommand(state);
 			break;

@@ -14,6 +14,15 @@ void QuitApplicationCommand::execute() {
 	state->setExitFlag(true);
 }
 
+ResizeWindowCommand::ResizeWindowCommand(State * state) : Command(state) {
+	panelConstructor = PanelConstructor();
+}
+
+void ResizeWindowCommand::execute() {
+	std::vector<Panel *> panels = state->getPanels();
+	panelConstructor.resizePanels(panels);
+}
+
 FocusPanelRightCommand::FocusPanelRightCommand(State * state) : Command(state) {}
 
 void FocusPanelRightCommand::execute() {

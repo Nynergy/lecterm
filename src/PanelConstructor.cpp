@@ -56,3 +56,52 @@ int PanelConstructor::calculateColumnsByOffset(int offset) {
 
 	return columns;
 }
+
+// First three panels should always be the same
+void PanelConstructor::resizePanels(std::vector<Panel *> panels) {
+	Panel * notebookPanel = panels[0];
+	Panel * noteListPanel = panels[1];
+	Panel * notePanel = panels[2];
+
+	resizeNotebookPanel(notebookPanel);
+	resizeNoteListPanel(noteListPanel);
+	resizeNotePanel(notePanel);
+
+	for(auto panel : panels) {
+		panel->replaceWindow();
+	}
+}
+
+void PanelConstructor::resizeNotebookPanel(Panel * panel) {
+	Point upperLeftCorner = Point(0, 0);
+	int lines = CursesUtil::maxLines();
+	int columns = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
+
+	panel->setUpperLeftCorner(upperLeftCorner);
+	panel->setLines(lines);
+	panel->setColumns(columns);
+}
+
+void PanelConstructor::resizeNoteListPanel(Panel * panel) {
+	int offset = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
+	Point upperLeftCorner = Point(offset, 0);
+	int lines = CursesUtil::maxLines();
+	int columns = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
+
+	panel->setUpperLeftCorner(upperLeftCorner);
+	panel->setLines(lines);
+	panel->setColumns(columns);
+}
+
+void PanelConstructor::resizeNotePanel(Panel * panel) {
+	int offsetOne = calculateColumnsByRatio(NOTEBOOK_PANEL_RATIO);
+	int offsetTwo = calculateColumnsByRatio(NOTE_LIST_PANEL_RATIO);
+	int offset = offsetOne + offsetTwo;
+	Point upperLeftCorner = Point(offset, 0);
+	int lines = CursesUtil::maxLines();
+	int columns = calculateColumnsByOffset(offset);
+
+	panel->setUpperLeftCorner(upperLeftCorner);
+	panel->setLines(lines);
+	panel->setColumns(columns);
+}

@@ -24,4 +24,8 @@ public:
 	void drawToScreen();
 	void drawFocusedToScreen();
 	void setTitle(std::string newTitle);
+	void setUpperLeftCorner(Point upperLeft);
+	void setLines(int newLines);
+	void setColumns(int newColumns);
+	void replaceWindow();
 };

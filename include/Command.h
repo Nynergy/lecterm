@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PanelConstructor.h"
 #include "State.h"
 
 class Command {
@@ -21,6 +22,15 @@ public:
 class QuitApplicationCommand : public Command {
 public:
 	QuitApplicationCommand(State * state);
+	void execute() override;
+};
+
+class ResizeWindowCommand : public Command {
+private:
+	PanelConstructor panelConstructor;
+
+public:
+	ResizeWindowCommand(State * state);
 	void execute() override;
 };
 
