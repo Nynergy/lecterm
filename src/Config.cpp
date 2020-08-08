@@ -32,20 +32,29 @@ ConfigParser::~ConfigParser() {
 	config.close();
 }
 
-// FIXME Heavily nested code should be broken up into multiple methods
 void ConfigParser::parseKeyValuePairs() {
-	Config & instance = Config::getInstance();
 	std::string line;
 	while(std::getline(config, line)) {
-		std::istringstream lineStream(line);
-		std::string key;
-		if(std::getline(lineStream, key, '=')) {
-			std::string value;
-			if(std::getline(lineStream, value)) {
-				instance.addKeyValuePair(trimWhitespace(key), trimWhitespace(value));
-			}
+		parseSingleLine(line);
+	}
+}
+
+void ConfigParser::parseSingleLine(std::string line) {
+	std::istringstream lineStream(line);
+	std::string key;
+	if(std::getline(lineStream, key, '=')) {
+		std::string value;
+		if(std::getline(lineStream, value)) {
+			passPairToConfig(key, value);
 		}
 	}
+}
+
+void ConfigParser::passPairToConfig(std::string key, std::string value) {
+	Config & instance = Config::getInstance();
+	std::string trimmedKey = trimWhitespace(key);
+	std::string trimmedValue = trimWhitespace(value);
+	instance.addKeyValuePair(trimmedKey, trimmedValue);
 }
 
 std::string ConfigParser::trimWhitespace(std::string str) {

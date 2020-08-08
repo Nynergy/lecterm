@@ -27,6 +27,8 @@ class ConfigParser {
 private:
 	std::ifstream config;
 
+	void parseSingleLine(std::string line);
+	void passPairToConfig(std::string key, std::string value);
 	std::string trimWhitespace(std::string str);
 
 public:
