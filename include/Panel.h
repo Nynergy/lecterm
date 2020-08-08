@@ -52,6 +52,8 @@ private:
 	PanelContent content;
 
 	void drawItems();
+	void drawItem(std::string item, int itemCounter);
+	bool itemIsHovered(int itemIndex);
 
 public:
 	ListPanel(PanelDimensions panelDimensions);

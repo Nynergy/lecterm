@@ -1,5 +1,9 @@
 #include "Panel.h"
 
+static const int ITEM_START_COLUMN = 1;
+static const int BORDER_OFFSET = 2;
+static const int ITEM_INDEX_OFFSET = 1;
+
 Panel::Panel(PanelDimensions panelDimensions) {
 	title = "";
 	upperLeftCorner = panelDimensions.upperLeft;
@@ -120,20 +124,27 @@ void ListPanel::drawFocusedToScreen() {
 	refreshWindow();
 }
 
-// FIXME This is an absolute mess and requires refactoring
 void ListPanel::drawItems() {
 	int itemCounter = 0;
 	for(std::string item : content.getItems()) {
-		Point itemPoint = Point(1, ++itemCounter);
-		std::string text = truncateStringByLength(item, columns - 2);
-		if(content.getHoverIndex() == (itemCounter - 1)) {
-			CursesUtil::setWindowAttributes(window, A_REVERSE);
-			CursesUtil::drawStringAtPoint(window, text, itemPoint);
-			CursesUtil::unsetWindowAttributes(window, A_REVERSE);
-		} else {
-			CursesUtil::drawStringAtPoint(window, text, itemPoint);
-		}
+		drawItem(item, ++itemCounter);
 	}
+}
+
+void ListPanel::drawItem(std::string item, int itemCounter) {
+	Point itemPoint = Point(ITEM_START_COLUMN, itemCounter);
+	std::string text = truncateStringByLength(item, columns - BORDER_OFFSET);
+	if(itemIsHovered(itemCounter - ITEM_INDEX_OFFSET)) {
+		CursesUtil::setWindowAttributes(window, A_REVERSE);
+		CursesUtil::drawStringAtPoint(window, text, itemPoint);
+		CursesUtil::unsetWindowAttributes(window, A_REVERSE);
+	} else {
+		CursesUtil::drawStringAtPoint(window, text, itemPoint);
+	}
+}
+
+bool ListPanel::itemIsHovered(int itemIndex) {
+	return content.getHoverIndex() == itemIndex;
 }
 
 TextPanel::TextPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
