@@ -8,10 +8,14 @@
 class PanelContent {
 private:
 	std::vector<std::string> items;
+	int hoverIndex;
+	int selectionIndex;
 
 public:
 	PanelContent();
+	void addItem(std::string item);
 	std::vector<std::string> getItems();
+	int getHoverIndex();
 };
 
 class Panel {

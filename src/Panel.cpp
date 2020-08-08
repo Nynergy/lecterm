@@ -120,12 +120,19 @@ void ListPanel::drawFocusedToScreen() {
 	refreshWindow();
 }
 
+// FIXME This is an absolute mess and requires refactoring
 void ListPanel::drawItems() {
 	int itemCounter = 0;
 	for(std::string item : content.getItems()) {
 		Point itemPoint = Point(1, ++itemCounter);
 		std::string text = truncateStringByLength(item, columns - 2);
-		CursesUtil::drawStringAtPoint(window, text, itemPoint);
+		if(content.getHoverIndex() == (itemCounter - 1)) {
+			CursesUtil::setWindowAttributes(window, A_REVERSE);
+			CursesUtil::drawStringAtPoint(window, text, itemPoint);
+			CursesUtil::unsetWindowAttributes(window, A_REVERSE);
+		} else {
+			CursesUtil::drawStringAtPoint(window, text, itemPoint);
+		}
 	}
 }
 
@@ -147,8 +154,22 @@ void TextPanel::drawFocusedToScreen() {
 	refreshWindow();
 }
 
-PanelContent::PanelContent() {}
+PanelContent::PanelContent() : hoverIndex(0), selectionIndex(-1) {
+	addItem("Item One");
+	addItem("Item Two");
+	addItem("Item Three");
+	addItem("Item Four");
+	addItem("Item Five");
+}
+
+void PanelContent::addItem(std::string item) {
+	items.push_back(item);
+}
 
 std::vector<std::string> PanelContent::getItems() {
 	return items;
+}
+
+int PanelContent::getHoverIndex() {
+	return hoverIndex;
 }
