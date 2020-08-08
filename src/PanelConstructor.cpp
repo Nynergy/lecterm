@@ -46,7 +46,7 @@ PanelDimensions PanelConstructor::getNoteListPanelDimensions() {
 Panel * PanelConstructor::getNewNotePanel() {
 	PanelDimensions panelDimensions = getNotePanelDimensions();
 
-	Panel * note = new ContentPanel(panelDimensions);
+	Panel * note = new TextPanel(panelDimensions);
 	note->setTitle("Note");
 
 	return note;

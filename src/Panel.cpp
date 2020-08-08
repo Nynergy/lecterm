@@ -129,19 +129,19 @@ void ListPanel::drawItems() {
 	}
 }
 
-ContentPanel::ContentPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
+TextPanel::TextPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
 
-ContentPanel::~ContentPanel() {
+TextPanel::~TextPanel() {
 	teardownWindow();
 }
 
-void ContentPanel::drawToScreen() {
+void TextPanel::drawToScreen() {
 	drawBorder();
 	drawTitle();
 	refreshWindow();
 }
 
-void ContentPanel::drawFocusedToScreen() {
+void TextPanel::drawFocusedToScreen() {
 	drawFocusedBorder();
 	drawTitle();
 	refreshWindow();

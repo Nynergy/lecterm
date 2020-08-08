@@ -56,10 +56,10 @@ public:
 	void drawFocusedToScreen() override;
 };
 
-class ContentPanel : public Panel {
+class TextPanel : public Panel {
 public:
-	ContentPanel(PanelDimensions panelDimensions);
-	~ContentPanel();
+	TextPanel(PanelDimensions panelDimensions);
+	~TextPanel();
 	void drawToScreen() override;
 	void drawFocusedToScreen() override;
 };
