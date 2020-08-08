@@ -65,6 +65,16 @@ Point Panel::calculateTitlePoint() {
 	return Point(x, 0);
 }
 
+std::string Panel::truncateStringByLength(std::string str, int length) {
+	if(length >= (int)str.length()) {
+		return str;
+	}
+
+	std::string truncated = str.substr(0, length);
+
+	return truncated;
+}
+
 void Panel::refreshWindow() {
 	wrefresh(window);
 }
@@ -99,7 +109,24 @@ ListPanel::~ListPanel() {
 void ListPanel::drawToScreen() {
 	drawBorder();
 	drawTitle();
+	drawItems();
 	refreshWindow();
+}
+
+void ListPanel::drawFocusedToScreen() {
+	drawFocusedBorder();
+	drawTitle();
+	drawItems();
+	refreshWindow();
+}
+
+void ListPanel::drawItems() {
+	int itemCounter = 0;
+	for(std::string item : content.getItems()) {
+		Point itemPoint = Point(1, ++itemCounter);
+		std::string text = truncateStringByLength(item, columns - 2);
+		CursesUtil::drawStringAtPoint(window, text, itemPoint);
+	}
 }
 
 ContentPanel::ContentPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
@@ -112,4 +139,16 @@ void ContentPanel::drawToScreen() {
 	drawBorder();
 	drawTitle();
 	refreshWindow();
+}
+
+void ContentPanel::drawFocusedToScreen() {
+	drawFocusedBorder();
+	drawTitle();
+	refreshWindow();
+}
+
+PanelContent::PanelContent() {}
+
+std::vector<std::string> PanelContent::getItems() {
+	return items;
 }
