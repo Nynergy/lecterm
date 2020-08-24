@@ -51,3 +51,15 @@ public:
 	FocusPanelLeftCommand(State * state);
 	void execute() override;
 };
+
+class ScrollDownCommand : public Command {
+public:
+	ScrollDownCommand(State * state);
+	void execute() override;
+};
+
+class ScrollUpCommand : public Command {
+public:
+	ScrollUpCommand(State * state);
+	void execute() override;
+};

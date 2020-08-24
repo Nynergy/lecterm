@@ -99,14 +99,28 @@ void Panel::setColumns(int newColumns) {
 	columns = newColumns;
 }
 
+PanelController * Panel::getController() {
+	return controller;
+}
+
+PanelContent * Panel::getContent() {
+	return content;
+}
+
 void Panel::replaceWindow() {
 	delwin(window);
 	window = newwin(lines, columns, upperLeftCorner.y, upperLeftCorner.x);
 }
 
-ListPanel::ListPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
+ListPanel::ListPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {
+	controller = new ListPanelController(this);
+	content = new ListPanelContent();
+}
 
 ListPanel::~ListPanel() {
+	delete controller;
+	delete content;
+
 	teardownWindow();
 }
 
@@ -126,7 +140,7 @@ void ListPanel::drawFocusedToScreen() {
 
 void ListPanel::drawItems() {
 	int itemCounter = 0;
-	for(std::string item : content.getItems()) {
+	for(std::string item : content->getItems()) {
 		drawItem(item, ++itemCounter);
 	}
 }
@@ -144,28 +158,52 @@ void ListPanel::drawItem(std::string item, int itemCounter) {
 }
 
 bool ListPanel::itemIsHovered(int itemIndex) {
-	return content.getHoverIndex() == itemIndex;
+	ListPanelContent * listContent = (ListPanelContent *)content;
+	return listContent->getHoverIndex() == itemIndex;
 }
 
-TextPanel::TextPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {}
+TextPanel::TextPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {
+	controller = new TextPanelController(this);
+	content = new TextPanelContent();
+}
 
 TextPanel::~TextPanel() {
+	delete controller;
+	delete content;
+
 	teardownWindow();
 }
 
 void TextPanel::drawToScreen() {
 	drawBorder();
 	drawTitle();
+	drawItems();
 	refreshWindow();
 }
 
 void TextPanel::drawFocusedToScreen() {
 	drawFocusedBorder();
 	drawTitle();
+	drawItems();
 	refreshWindow();
 }
 
-PanelContent::PanelContent() : hoverIndex(0), selectionIndex(-1) {
+void TextPanel::drawItems() {
+	int itemCounter = 0;
+	for(std::string item : content->getItems()) {
+		drawItem(item, ++itemCounter);
+	}
+}
+
+void TextPanel::drawItem(std::string item, int itemCounter) {
+	Point itemPoint = Point(ITEM_START_COLUMN, itemCounter);
+	// FIXME In the future, TextPanelContent will wrap text lines to fit
+	// the panel's window, so there will be no need to truncate lines
+	std::string text = truncateStringByLength(item, columns - BORDER_OFFSET);
+	CursesUtil::drawStringAtPoint(window, text, itemPoint);
+}
+
+PanelContent::PanelContent() {
 	addItem("Item One");
 	addItem("Item Two");
 	addItem("Item Three");
@@ -181,6 +219,44 @@ std::vector<std::string> PanelContent::getItems() {
 	return items;
 }
 
-int PanelContent::getHoverIndex() {
+ListPanelContent::ListPanelContent() : PanelContent(), hoverIndex(0), selectionIndex(-1) {}
+
+int ListPanelContent::getHoverIndex() {
 	return hoverIndex;
+}
+
+void ListPanelContent::incrementHoverIndex() {
+	hoverIndex = (hoverIndex + 1) % items.size();
+}
+
+void ListPanelContent::decrementHoverIndex() {
+	hoverIndex = hoverIndex == 0 ? items.size() - 1 : hoverIndex - 1;
+}
+
+TextPanelContent::TextPanelContent() : PanelContent() {}
+
+PanelController::PanelController(Panel * parent) : parent(parent) {}
+
+ListPanelController::ListPanelController(Panel * parent) : PanelController(parent) {}
+
+void ListPanelController::scrollDown() {
+	ListPanelContent * content = (ListPanelContent *)parent->getContent();
+	content->incrementHoverIndex();
+}
+
+void ListPanelController::scrollUp() {
+	ListPanelContent * content = (ListPanelContent *)parent->getContent();
+	content->decrementHoverIndex();
+}
+
+TextPanelController::TextPanelController(Panel * parent) : PanelController(parent) {}
+
+void TextPanelController::scrollDown() {
+	// TODO: Scroll text
+	return;
+}
+
+void TextPanelController::scrollUp() {
+	// TODO: Scroll text
+	return;
 }

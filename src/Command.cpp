@@ -44,3 +44,25 @@ void FocusPanelLeftCommand::decrementCurrentPanel() {
 	int currentPanelIndex = state->getCurrentPanelIndex();
 	state->setCurrentPanel(--currentPanelIndex);
 }
+
+ScrollDownCommand::ScrollDownCommand(State * state) : Command(state) {}
+
+void ScrollDownCommand::execute() {
+	std::vector<Panel *> panels = state->getPanels();
+	int currentPanelIndex = state->getCurrentPanelIndex();
+	Panel * currentPanel = panels[currentPanelIndex];
+
+	PanelController * controller = currentPanel->getController();
+	controller->scrollDown();
+}
+
+ScrollUpCommand::ScrollUpCommand(State * state) : Command(state) {}
+
+void ScrollUpCommand::execute() {
+	std::vector<Panel *> panels = state->getPanels();
+	int currentPanelIndex = state->getCurrentPanelIndex();
+	Panel * currentPanel = panels[currentPanelIndex];
+
+	PanelController * controller = currentPanel->getController();
+	controller->scrollUp();
+}

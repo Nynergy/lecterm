@@ -17,6 +17,12 @@ Command * CommandFactory::getCommandFromKey(int key) {
 		case 'l':
 			command = new FocusPanelRightCommand(state);
 			break;
+		case 'j':
+			command = new ScrollDownCommand(state);
+			break;
+		case 'k':
+			command = new ScrollUpCommand(state);
+			break;
 		default:
 			command = new NOPCommand(state);
 			break;
