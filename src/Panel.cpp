@@ -4,6 +4,14 @@ static const int ITEM_START_COLUMN = 1;
 static const int BORDER_OFFSET = 2;
 static const int ITEM_INDEX_OFFSET = 1;
 
+int getColorFromString(std::string color) {
+	Config & config = Config::getInstance();
+	std::string colorString = config.getValueFromKey(color);
+	int colorNum = CursesUtil::getColor(colorString);
+
+	return colorNum;
+}
+
 Panel::Panel(PanelDimensions panelDimensions) {
 	title = "";
 	upperLeftCorner = panelDimensions.upperLeft;
@@ -34,9 +42,7 @@ void Panel::drawFocusedToScreen() {
 }
 
 void Panel::drawFocusedBorder() {
-	Config & config = Config::getInstance();
-	std::string borderColorString = config.getValueFromKey("FocusColor");
-	int borderColor = CursesUtil::getColor(borderColorString);
+	int borderColor = getColorFromString("FocusColor");
 	CursesUtil::setWindowAttributes(window, borderColor);
 	drawBorder();
 	CursesUtil::unsetWindowAttributes(window, borderColor);
@@ -162,9 +168,7 @@ int ListPanel::getAttributesByIndex(int index) {
 		attr |= A_REVERSE;
 	}
 	if(itemIsSelected(index)) {
-		Config & config = Config::getInstance();
-		std::string itemColorString = config.getValueFromKey("SelectionColor");
-		int itemColor = CursesUtil::getColor(itemColorString);
+		int itemColor = getColorFromString("SelectionColor");
 		attr |= itemColor;
 	}
 
@@ -209,6 +213,7 @@ void TextPanel::drawFocusedToScreen() {
 
 void TextPanel::drawItems() {
 	int itemCounter = 0;
+	// TODO: This is where the content will be wrapped to the window
 	for(std::string item : content->getItems()) {
 		drawItem(item, ++itemCounter);
 	}

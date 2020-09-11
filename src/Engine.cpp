@@ -30,16 +30,27 @@ void Engine::setupCursesEnvironment() {
 }
 
 void Engine::initializeColorPairs() {
-	use_default_colors();	// Enable transparency
+	int backgroundColor = COLOR_BLACK;
+	if(transparencyIsSet()) {
+		use_default_colors();
+		backgroundColor = -1;	// -1 is ncurses transparent color
+	}
 
-	init_pair(0, COLOR_BLACK, -1);
-	init_pair(1, COLOR_RED, -1);
-	init_pair(2, COLOR_GREEN, -1);
-	init_pair(3, COLOR_YELLOW, -1);
-	init_pair(4, COLOR_BLUE, -1);
-	init_pair(5, COLOR_MAGENTA, -1);
-	init_pair(6, COLOR_CYAN, -1);
-	init_pair(7, COLOR_WHITE, -1);
+	init_pair(0, COLOR_BLACK, backgroundColor);
+	init_pair(1, COLOR_RED, backgroundColor);
+	init_pair(2, COLOR_GREEN, backgroundColor);
+	init_pair(3, COLOR_YELLOW, backgroundColor);
+	init_pair(4, COLOR_BLUE, backgroundColor);
+	init_pair(5, COLOR_MAGENTA, backgroundColor);
+	init_pair(6, COLOR_CYAN, backgroundColor);
+	init_pair(7, COLOR_WHITE, backgroundColor);
+}
+
+bool Engine::transparencyIsSet() {
+	Config & config = Config::getInstance();
+	std::string transparencyValue = config.getValueFromKey("Transparency");
+	if(transparencyValue == "true") return true;
+	else return false;
 }
 
 void Engine::teardownCursesEnvironment() {

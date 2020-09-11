@@ -7,6 +7,8 @@
 
 class PanelController;
 
+int getColorFromString(std::string color);
+
 class PanelContent {
 protected:
 	std::vector<std::string> items;

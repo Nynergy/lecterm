@@ -12,6 +12,7 @@ private:
 
 	void setupCursesEnvironment();
 	void initializeColorPairs();
+	bool transparencyIsSet();
 	void teardownCursesEnvironment();
 	void constructPanels();
 	void renderPanels();

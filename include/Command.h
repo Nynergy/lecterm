@@ -8,6 +8,7 @@ protected:
 	State * state;
 
 	Command(State * state);
+	PanelController * getControllerFromCurrentPanel();
 public:
 	virtual ~Command() {}
 	virtual void execute() = 0;

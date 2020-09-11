@@ -2,6 +2,15 @@
 
 Command::Command(State * state) : state(state) {}
 
+PanelController * Command::getControllerFromCurrentPanel() {
+	std::vector<Panel *> panels = state->getPanels();
+	int currentPanelIndex = state->getCurrentPanelIndex();
+	Panel * currentPanel = panels[currentPanelIndex];
+	PanelController * controller = currentPanel->getController();
+
+	return controller;
+}
+
 NOPCommand::NOPCommand(State * state) : Command(state) {}
 
 void NOPCommand::execute() {
@@ -48,32 +57,20 @@ void FocusPanelLeftCommand::decrementCurrentPanel() {
 ScrollDownCommand::ScrollDownCommand(State * state) : Command(state) {}
 
 void ScrollDownCommand::execute() {
-	std::vector<Panel *> panels = state->getPanels();
-	int currentPanelIndex = state->getCurrentPanelIndex();
-	Panel * currentPanel = panels[currentPanelIndex];
-
-	PanelController * controller = currentPanel->getController();
+	PanelController * controller = getControllerFromCurrentPanel();
 	controller->scrollDown();
 }
 
 ScrollUpCommand::ScrollUpCommand(State * state) : Command(state) {}
 
 void ScrollUpCommand::execute() {
-	std::vector<Panel *> panels = state->getPanels();
-	int currentPanelIndex = state->getCurrentPanelIndex();
-	Panel * currentPanel = panels[currentPanelIndex];
-
-	PanelController * controller = currentPanel->getController();
+	PanelController * controller = getControllerFromCurrentPanel();
 	controller->scrollUp();
 }
 
 SelectItemCommand::SelectItemCommand(State * state) : Command(state) {}
 
 void SelectItemCommand::execute() {
-	std::vector<Panel *> panels = state->getPanels();
-	int currentPanelIndex = state->getCurrentPanelIndex();
-	Panel * currentPanel = panels[currentPanelIndex];
-
-	PanelController * controller = currentPanel->getController();
+	PanelController * controller = getControllerFromCurrentPanel();
 	controller->selectItem();
 }
