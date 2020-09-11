@@ -66,3 +66,14 @@ void ScrollUpCommand::execute() {
 	PanelController * controller = currentPanel->getController();
 	controller->scrollUp();
 }
+
+SelectItemCommand::SelectItemCommand(State * state) : Command(state) {}
+
+void SelectItemCommand::execute() {
+	std::vector<Panel *> panels = state->getPanels();
+	int currentPanelIndex = state->getCurrentPanelIndex();
+	Panel * currentPanel = panels[currentPanelIndex];
+
+	PanelController * controller = currentPanel->getController();
+	controller->selectItem();
+}

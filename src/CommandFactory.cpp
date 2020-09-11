@@ -23,6 +23,9 @@ Command * CommandFactory::getCommandFromKey(int key) {
 		case 'k':
 			command = new ScrollUpCommand(state);
 			break;
+		case ' ':
+			command = new SelectItemCommand(state);
+			break;
 		default:
 			command = new NOPCommand(state);
 			break;

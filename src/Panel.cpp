@@ -148,18 +148,37 @@ void ListPanel::drawItems() {
 void ListPanel::drawItem(std::string item, int itemCounter) {
 	Point itemPoint = Point(ITEM_START_COLUMN, itemCounter);
 	std::string text = truncateStringByLength(item, columns - BORDER_OFFSET);
-	if(itemIsHovered(itemCounter - ITEM_INDEX_OFFSET)) {
-		CursesUtil::setWindowAttributes(window, A_REVERSE);
-		CursesUtil::drawStringAtPoint(window, text, itemPoint);
-		CursesUtil::unsetWindowAttributes(window, A_REVERSE);
-	} else {
-		CursesUtil::drawStringAtPoint(window, text, itemPoint);
+
+	int attr = getAttributesByIndex(itemCounter - ITEM_INDEX_OFFSET);
+
+	CursesUtil::setWindowAttributes(window, attr);
+	CursesUtil::drawStringAtPoint(window, text, itemPoint);
+	CursesUtil::unsetWindowAttributes(window, attr);
+}
+
+int ListPanel::getAttributesByIndex(int index) {
+	int attr = A_NORMAL;
+	if(itemIsHovered(index)) {
+		attr |= A_REVERSE;
 	}
+	if(itemIsSelected(index)) {
+		Config & config = Config::getInstance();
+		std::string itemColorString = config.getValueFromKey("SelectionColor");
+		int itemColor = CursesUtil::getColor(itemColorString);
+		attr |= itemColor;
+	}
+
+	return attr;
 }
 
 bool ListPanel::itemIsHovered(int itemIndex) {
 	ListPanelContent * listContent = (ListPanelContent *)content;
 	return listContent->getHoverIndex() == itemIndex;
+}
+
+bool ListPanel::itemIsSelected(int itemIndex) {
+	ListPanelContent * listContent = (ListPanelContent *)content;
+	return listContent->getSelectionIndex() == itemIndex;
 }
 
 TextPanel::TextPanel(PanelDimensions panelDimensions) : Panel(panelDimensions) {
@@ -233,6 +252,14 @@ void ListPanelContent::decrementHoverIndex() {
 	hoverIndex = hoverIndex == 0 ? items.size() - 1 : hoverIndex - 1;
 }
 
+int ListPanelContent::getSelectionIndex() {
+	return selectionIndex;
+}
+
+void ListPanelContent::setSelectionIndex(int index) {
+	selectionIndex = index;
+}
+
 TextPanelContent::TextPanelContent() : PanelContent() {}
 
 PanelController::PanelController(Panel * parent) : parent(parent) {}
@@ -249,6 +276,12 @@ void ListPanelController::scrollUp() {
 	content->decrementHoverIndex();
 }
 
+void ListPanelController::selectItem() {
+	ListPanelContent * content = (ListPanelContent *)parent->getContent();
+	int hoverIndex = content->getHoverIndex();
+	content->setSelectionIndex(hoverIndex);
+}
+
 TextPanelController::TextPanelController(Panel * parent) : PanelController(parent) {}
 
 void TextPanelController::scrollDown() {
@@ -258,5 +291,10 @@ void TextPanelController::scrollDown() {
 
 void TextPanelController::scrollUp() {
 	// TODO: Scroll text
+	return;
+}
+
+void TextPanelController::selectItem() {
+	// NOTE: The text panel has nothing to 'select'
 	return;
 }

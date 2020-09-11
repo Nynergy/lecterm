@@ -63,3 +63,9 @@ public:
 	ScrollUpCommand(State * state);
 	void execute() override;
 };
+
+class SelectItemCommand : public Command {
+public:
+	SelectItemCommand(State * state);
+	void execute() override;
+};

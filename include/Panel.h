@@ -27,6 +27,8 @@ public:
 	int getHoverIndex();
 	void incrementHoverIndex();
 	void decrementHoverIndex();
+	int getSelectionIndex();
+	void setSelectionIndex(int index);
 };
 
 class TextPanelContent : public PanelContent {
@@ -71,7 +73,9 @@ class ListPanel : public Panel {
 private:
 	void drawItems();
 	void drawItem(std::string item, int itemCounter);
+	int getAttributesByIndex(int index);
 	bool itemIsHovered(int itemIndex);
+	bool itemIsSelected(int itemIndex);
 
 public:
 	ListPanel(PanelDimensions panelDimensions);
@@ -102,6 +106,7 @@ public:
 
 	virtual void scrollDown() = 0;
 	virtual void scrollUp() = 0;
+	virtual void selectItem() = 0;
 };
 
 class ListPanelController : public PanelController {
@@ -109,6 +114,7 @@ public:
 	ListPanelController(Panel * parent);
 	void scrollDown() override;
 	void scrollUp() override;
+	void selectItem() override;
 };
 
 class TextPanelController : public PanelController {
@@ -116,4 +122,5 @@ public:
 	TextPanelController(Panel * parent);
 	void scrollDown() override;
 	void scrollUp() override;
+	void selectItem() override;
 };
