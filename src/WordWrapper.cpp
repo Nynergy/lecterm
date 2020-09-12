@@ -6,7 +6,25 @@ WordWrapper::WordWrapper() {}
 
 WordWrapper::~WordWrapper() {}
 
+std::vector<std::string> WordWrapper::getWrappedLinesFromWidth(std::vector<std::string> lines, int width) {
+	std::vector<std::string> allLines;
+	for(std::string line : lines) {
+		std::vector<std::string> wrapped = getWrappedLinesFromWidth(line, width);
+		for(std::string wrappedLine : wrapped) {
+			allLines.push_back(wrappedLine);
+		}
+	}
+
+	return allLines;
+}
+
 std::vector<std::string> WordWrapper::getWrappedLinesFromWidth(std::string line, int width) {
+	std::vector<std::string> words = getWordsFromLine(line);
+	std::vector<std::string> lines = constructWrappedLines(words, width);
+	return lines;
+}
+
+std::vector<std::string> WordWrapper::getWordsFromLine(std::string line) {
 	std::stringstream ss(line);
 	std::string token;
 	std::vector<std::string> words;
@@ -14,6 +32,15 @@ std::vector<std::string> WordWrapper::getWrappedLinesFromWidth(std::string line,
 		words.push_back(token);
 	}
 
+	return words;
+}
+
+/*
+ * A greedy algorithm for wrapping lines based on the amount
+ * of space still remaining for words. If a word cannot fit
+ * into the remaining space, it is booted to the next line.
+ */
+std::vector<std::string> WordWrapper::constructWrappedLines(std::vector<std::string> words, int width) {
 	std::vector<std::string> lines;
 	int spaceLeft = width;
 	std::string newLine = "";

@@ -79,7 +79,6 @@ std::string Panel::truncateStringByLength(std::string str, int length) {
 	if(length >= (int)str.length()) {
 		return str;
 	}
-
 	std::string truncated = str.substr(0, length);
 
 	return truncated;
@@ -215,12 +214,10 @@ void TextPanel::drawItems() {
 	int lineCounter = 0;
 	int width = columns - BORDER_OFFSET;
 	std::vector<std::string> items = content->getItems();
-	for(std::string item : items) {
-		std::vector<std::string> wrappedLines = WordWrapper::getWrappedLinesFromWidth(item, width);
-		for(std::string line : wrappedLines) {
-			if(lineCounter < lines - BORDER_OFFSET)
-			drawItem(line, ++lineCounter);
-		}
+	std::vector<std::string> wrappedLines = WordWrapper::getWrappedLinesFromWidth(items, width);
+	for(std::string line : wrappedLines) {
+		if(lineCounter < lines - BORDER_OFFSET)
+		drawItem(line, ++lineCounter);
 	}
 }
 
@@ -230,6 +227,7 @@ void TextPanel::drawItem(std::string item, int itemCounter) {
 }
 
 PanelContent::PanelContent() {
+	// FIXME: Remove once directory contents can be piped to Panels
 	addItem("Item One");
 	addItem("Item Two");
 	addItem("Item Three");
