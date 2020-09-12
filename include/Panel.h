@@ -4,6 +4,7 @@
 
 #include "Config.h"
 #include "CursesUtil.h"
+#include "WordWrapper.h"
 
 class PanelController;
 
@@ -17,6 +18,7 @@ public:
 	PanelContent();
 	void addItem(std::string item);
 	std::vector<std::string> getItems();
+	void setItems(std::vector<std::string> newItems);
 };
 
 class ListPanelContent : public PanelContent {

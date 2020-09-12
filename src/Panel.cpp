@@ -212,19 +212,21 @@ void TextPanel::drawFocusedToScreen() {
 }
 
 void TextPanel::drawItems() {
-	int itemCounter = 0;
-	// TODO: This is where the content will be wrapped to the window
-	for(std::string item : content->getItems()) {
-		drawItem(item, ++itemCounter);
+	int lineCounter = 0;
+	int width = columns - BORDER_OFFSET;
+	std::vector<std::string> items = content->getItems();
+	for(std::string item : items) {
+		std::vector<std::string> wrappedLines = WordWrapper::getWrappedLinesFromWidth(item, width);
+		for(std::string line : wrappedLines) {
+			if(lineCounter < lines - BORDER_OFFSET)
+			drawItem(line, ++lineCounter);
+		}
 	}
 }
 
 void TextPanel::drawItem(std::string item, int itemCounter) {
 	Point itemPoint = Point(ITEM_START_COLUMN, itemCounter);
-	// FIXME In the future, TextPanelContent will wrap text lines to fit
-	// the panel's window, so there will be no need to truncate lines
-	std::string text = truncateStringByLength(item, columns - BORDER_OFFSET);
-	CursesUtil::drawStringAtPoint(window, text, itemPoint);
+	CursesUtil::drawStringAtPoint(window, item, itemPoint);
 }
 
 PanelContent::PanelContent() {
@@ -241,6 +243,10 @@ void PanelContent::addItem(std::string item) {
 
 std::vector<std::string> PanelContent::getItems() {
 	return items;
+}
+
+void PanelContent::setItems(std::vector<std::string> newItems) {
+	items = newItems;
 }
 
 ListPanelContent::ListPanelContent() : PanelContent(), hoverIndex(0), selectionIndex(-1) {}

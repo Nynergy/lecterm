@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CommandFactory.h"
+#include "FileProcessor.h" // FIXME: Remove after testing complete
 #include "PanelConstructor.h"
 
 class Engine {

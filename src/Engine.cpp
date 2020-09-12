@@ -66,6 +66,15 @@ void Engine::constructPanels() {
 	state->addPanel(panelConstructor->getNewNoteListPanel());
 	state->addPanel(panelConstructor->getNewNotePanel());
 
+	// FIXME: Testing for note window content
+	Panel * noteWindow = state->getPanels()[2];
+	FileProcessor * fproc = new FileProcessor("longLines.txt");
+	std::vector<std::string> lines;
+	while(!fproc->isEOF) {
+		lines.push_back(fproc->poll());
+	}
+	noteWindow->getContent()->setItems(lines);
+
 	state->setCurrentPanel(0);
 }
 
