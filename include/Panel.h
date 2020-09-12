@@ -36,8 +36,15 @@ public:
 };
 
 class TextPanelContent : public PanelContent {
+private:
+	int contentOffset;
+
 public:
 	TextPanelContent();
+	int getContentOffset();
+	void setContentOffset(int offset);
+	void incrementContentOffset();
+	void decrementContentOffset();
 };
 
 class Panel {
@@ -58,6 +65,7 @@ protected:
 	std::string truncateStringByLength(std::string str, int length);
 	void refreshWindow();
 	BoxCorners getPanelCorners();
+	void clearScreen();
 
 public:
 	Panel(PanelDimensions panelDimensions);

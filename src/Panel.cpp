@@ -88,6 +88,15 @@ void Panel::refreshWindow() {
 	wrefresh(window);
 }
 
+void Panel::clearScreen() {
+	for(int y = 1; y < lines - 1; y++) {
+		for(int x = 1; x < columns - 1; x++) {
+			Point p(x, y);
+			CursesUtil::drawCharAtPoint(window, ' ', p);
+		}
+	}
+}
+
 void Panel::setTitle(std::string newTitle) {
 	title = newTitle;
 }
@@ -211,13 +220,30 @@ void TextPanel::drawFocusedToScreen() {
 }
 
 void TextPanel::drawItems() {
+	clearScreen();
+
 	int lineCounter = 0;
 	int width = columns - BORDER_OFFSET;
 	std::vector<std::string> items = content->getItems();
 	std::vector<std::string> wrappedLines = WordWrapper::getWrappedLinesFromWidth(items, width);
+	int contentOffset = ((TextPanelContent *)content)->getContentOffset();
+	if((wrappedLines.size() - BORDER_OFFSET < lines) || (contentOffset < 0)) {
+		contentOffset = 0;
+		((TextPanelContent *)content)->setContentOffset(contentOffset);
+	} else if(contentOffset > wrappedLines.size() - (lines - BORDER_OFFSET)) {
+		contentOffset = wrappedLines.size() - (lines - BORDER_OFFSET);
+		((TextPanelContent *)content)->setContentOffset(contentOffset);
+	}
+	int offsetCounter = 0;
 	for(std::string line : wrappedLines) {
-		if(lineCounter < lines - BORDER_OFFSET)
-		drawItem(line, ++lineCounter);
+		if(offsetCounter < contentOffset) {
+			offsetCounter++;
+			continue;
+		}
+
+		if(lineCounter < lines - BORDER_OFFSET) {
+			drawItem(line, ++lineCounter);
+		}
 	}
 }
 
@@ -269,7 +295,23 @@ void ListPanelContent::setSelectionIndex(int index) {
 	selectionIndex = index;
 }
 
-TextPanelContent::TextPanelContent() : PanelContent() {}
+TextPanelContent::TextPanelContent() : PanelContent(), contentOffset(0) {}
+
+int TextPanelContent::getContentOffset() {
+	return contentOffset;
+}
+
+void TextPanelContent::setContentOffset(int offset) {
+	contentOffset = offset;
+}
+
+void TextPanelContent::incrementContentOffset() {
+	contentOffset++;
+}
+
+void TextPanelContent::decrementContentOffset() {
+	contentOffset--;
+}
 
 PanelController::PanelController(Panel * parent) : parent(parent) {}
 
@@ -294,12 +336,14 @@ void ListPanelController::selectItem() {
 TextPanelController::TextPanelController(Panel * parent) : PanelController(parent) {}
 
 void TextPanelController::scrollDown() {
-	// TODO: Scroll text
+	TextPanelContent * content = (TextPanelContent *)parent->getContent();
+	content->incrementContentOffset();
 	return;
 }
 
 void TextPanelController::scrollUp() {
-	// TODO: Scroll text
+	TextPanelContent * content = (TextPanelContent *)parent->getContent();
+	content->decrementContentOffset();
 	return;
 }
 
