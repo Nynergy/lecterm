@@ -221,22 +221,25 @@ void TextPanel::drawFocusedToScreen() {
 
 void TextPanel::drawItems() {
 	clearScreen();
+	std::vector<std::string> wrappedLines = getWrappedLines();
 
-	int lineCounter = 0;
-	int width = columns - BORDER_OFFSET;
-	std::vector<std::string> items = content->getItems();
-	std::vector<std::string> wrappedLines = WordWrapper::getWrappedLinesFromWidth(items, width);
-	int contentOffset = ((TextPanelContent *)content)->getContentOffset();
-	if((wrappedLines.size() - BORDER_OFFSET < lines) || (contentOffset < 0)) {
+	// Manipulate contentOffset
+	TextPanelContent * textContent = (TextPanelContent *)content;
+	int contentOffset = textContent->getContentOffset();
+	if(contentSmallerThanWindow(wrappedLines.size()) || (contentOffset < 0)) {
 		contentOffset = 0;
-		((TextPanelContent *)content)->setContentOffset(contentOffset);
-	} else if(contentOffset > wrappedLines.size() - (lines - BORDER_OFFSET)) {
+		textContent->setContentOffset(contentOffset);
+	} else if(endOfContentReached(contentOffset, wrappedLines.size())) {
 		contentOffset = wrappedLines.size() - (lines - BORDER_OFFSET);
-		((TextPanelContent *)content)->setContentOffset(contentOffset);
+		textContent->setContentOffset(contentOffset);
 	}
+
+	// Draw lines based on offset
 	int offsetCounter = 0;
+	int lineCounter = 0;
 	for(std::string line : wrappedLines) {
 		if(offsetCounter < contentOffset) {
+			// Effectively skip this line
 			offsetCounter++;
 			continue;
 		}
@@ -245,6 +248,22 @@ void TextPanel::drawItems() {
 			drawItem(line, ++lineCounter);
 		}
 	}
+}
+
+std::vector<std::string> TextPanel::getWrappedLines() {
+	int width = columns - BORDER_OFFSET;
+	std::vector<std::string> items = content->getItems();
+	std::vector<std::string> wrapped = WordWrapper::getWrappedLinesFromWidth(items, width);
+
+	return wrapped;
+}
+
+bool TextPanel::contentSmallerThanWindow(int contentSize) {
+	return contentSize - BORDER_OFFSET < lines;
+}
+
+bool TextPanel::endOfContentReached(int contentOffset, int contentSize) {
+	return contentOffset > contentSize - (lines - BORDER_OFFSET);
 }
 
 void TextPanel::drawItem(std::string item, int itemCounter) {

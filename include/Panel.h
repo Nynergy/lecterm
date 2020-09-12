@@ -99,6 +99,9 @@ public:
 class TextPanel : public Panel {
 private:
 	void drawItems();
+	std::vector<std::string> getWrappedLines();
+	bool contentSmallerThanWindow(int contentSize);
+	bool endOfContentReached(int contentOffset, int contentSize);
 	void drawItem(std::string item, int itemCounter);
 
 public:
